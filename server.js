@@ -4,8 +4,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const User = require('./models/User');
-
+const User = require('./User');
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -64,3 +63,4 @@ app.post('/auth/login', async (req, res) => {
 app.get('/', (req, res) => res.send('MarkEv backend up'));
 
 app.listen(PORT, () => console.log('🚀 Server running on port', PORT));
+
