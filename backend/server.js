@@ -1,15 +1,16 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
+require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// MongoDB connection
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://vikash983545:vikash983545@cluster0.8qjqj.mongodb.net/markev?retryWrites=true&w=majority';
+// MongoDB connection - Use environment variable for security
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/markev';
 
 mongoose.connect(MONGODB_URI)
-  .then(() => console.log('✅ Connected to MongoDB Atlas'))
+  .then(() => console.log('✅ Connected to MongoDB'))
   .catch(err => console.log('❌ MongoDB connection error:', err));
 
 // Charger Schema
@@ -46,7 +47,7 @@ app.get('/api/health', (req, res) => {
     res.json({ 
         status: 'OK', 
         message: 'Backend is running',
-        database: mongoose.connection.readyState === 1 ? 'Connected to MongoDB Atlas' : 'Disconnected'
+        database: mongoose.connection.readyState === 1 ? 'Connected to MongoDB' : 'Disconnected'
     });
 });
 
