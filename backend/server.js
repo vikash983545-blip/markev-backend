@@ -169,6 +169,11 @@ app.post('/api/chargers/seed', async (req, res) => {
   }
 });
 
+// Root endpoint
+app.get('/', (req, res) => {
+  res.send('MarkEv backend up');
+});
+
 // Health check endpoint for Render
 app.get('/api/health', (req, res) => {
   res.json({ 
