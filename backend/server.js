@@ -74,22 +74,66 @@ app.get('/api/chargers/nearby', async (req, res) => {
 
 app.get('/api/chargers/all', async (req, res) => {
   try {
+    // Try to get from database first
     const chargers = await Charger.find();
     
-    const transformedChargers = chargers.map(charger => ({
-      id: charger._id.toString(),
-      name: charger.name,
-      lat: charger.latitude,
-      lng: charger.longitude,
-      address: charger.address,
-      type: charger.type,
-      status: charger.status,
-      price: charger.price,
-      rating: charger.rating,
-      connector_type: charger.connectorType
-    }));
-    
-    res.json(transformedChargers);
+    if (chargers.length > 0) {
+      // Return database data
+      const transformedChargers = chargers.map(charger => ({
+        id: charger._id.toString(),
+        name: charger.name,
+        lat: charger.latitude,
+        lng: charger.longitude,
+        address: charger.address,
+        type: charger.type,
+        status: charger.status,
+        price: charger.price,
+        rating: charger.rating,
+        connector_type: charger.connectorType
+      }));
+      res.json(transformedChargers);
+    } else {
+      // Return mock data if database is empty
+      const mockChargers = [
+        {
+          id: "1",
+          name: "Tesla Supercharger",
+          lat: 23.0225,
+          lng: 72.5714,
+          address: "CG Road, Ahmedabad",
+          type: "DC Fast",
+          status: "available",
+          price: 15.0,
+          rating: 4.5,
+          connector_type: "CCS"
+        },
+        {
+          id: "2",
+          name: "ChargePoint Station",
+          lat: 23.0250,
+          lng: 72.5750,
+          address: "Law Garden, Ahmedabad",
+          type: "AC Level 2",
+          status: "available",
+          price: 12.0,
+          rating: 4.2,
+          connector_type: "Type 2"
+        },
+        {
+          id: "3",
+          name: "EV Station",
+          lat: 23.0300,
+          lng: 72.5800,
+          address: "Maninagar, Ahmedabad",
+          type: "DC Fast",
+          status: "busy",
+          price: 18.0,
+          rating: 4.7,
+          connector_type: "CHAdeMO"
+        }
+      ];
+      res.json(mockChargers);
+    }
   } catch (error) {
     console.error('Error fetching all chargers:', error);
     res.status(500).json({ error: 'Internal server error' });
