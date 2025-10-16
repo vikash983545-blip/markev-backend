@@ -169,7 +169,17 @@ app.post('/api/chargers/seed', async (req, res) => {
   }
 });
 
+// Health check endpoint for Render
+app.get('/api/health', (req, res) => {
+  res.json({ 
+    status: 'OK', 
+    message: 'MarkEv Backend is running',
+    timestamp: new Date().toISOString()
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
   console.log(`📱 API Base URL: http://localhost:${PORT}/api`);
+  console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
 });
